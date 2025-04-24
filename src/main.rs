@@ -1,5 +1,5 @@
-use macroquad::prelude::*;
 use game_of_life::model;
+use macroquad::prelude::*;
 
 const GRID_WIDTH: usize = 50;
 const GRID_HEIGHT: usize = 50;

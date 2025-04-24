@@ -1,4 +1,4 @@
-use macroquad::prelude::{draw_rectangle, screen_width, screen_height, BLACK};
+use macroquad::prelude::{BLACK, draw_rectangle, screen_height, screen_width};
 
 pub struct Grid {
     pub width: usize,
@@ -15,7 +15,11 @@ impl Grid {
             matrix.push(row);
         }
 
-        Grid { width, height, matrix }
+        Grid {
+            width,
+            height,
+            matrix,
+        }
     }
 
     pub fn draw(&self) {
@@ -35,12 +39,7 @@ impl Grid {
                 let x = row_n as f32 * cell_width;
                 let y = col_n as f32 * cell_height;
 
-                draw_rectangle(
-                    x, y,
-                    cell_width,
-                    cell_height,
-                    BLACK
-                );
+                draw_rectangle(x, y, cell_width, cell_height, BLACK);
             }
         }
     }
