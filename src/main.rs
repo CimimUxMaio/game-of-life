@@ -4,9 +4,9 @@ use macroquad::prelude::*;
 const GRID_WIDTH: usize = 50;
 const GRID_HEIGHT: usize = 50;
 
-fn run(prev: &model::Grid, grid: &mut model::Grid) {
+fn update(prev: &model::Grid, grid: &mut model::Grid) {
     for (x, y) in prev.coordinates() {
-        let new_state = model::rules::compute_new_state(grid, x, y);
+        let new_state = model::rules::compute_new_state(prev, x, y);
         grid.update(x, y, new_state);
     }
 }
@@ -14,22 +14,20 @@ fn run(prev: &model::Grid, grid: &mut model::Grid) {
 #[macroquad::main("Game of Life")]
 async fn main() {
     let mut prev_grid = model::Grid::new(GRID_WIDTH, GRID_HEIGHT);
-    let mut grid = prev_grid.clone();
 
     // Initial state
-    grid.toggle(20, 20);
-    grid.toggle(20, 21);
-    grid.toggle(20, 22);
-    grid.toggle(21, 23);
-    grid.toggle(22, 21);
-    // grid.toggle(23, 20);
-    // grid.toggle(24, 19);
-    // grid.toggle(25, 18);
+    prev_grid.toggle(24, 22);
+    prev_grid.toggle(24, 23);
+    prev_grid.toggle(24, 24);
+    prev_grid.toggle(23, 23);
+    prev_grid.toggle(25, 24);
+
+    let mut grid = prev_grid.clone();
 
     loop {
         clear_background(WHITE);
 
-        run(&prev_grid, &mut grid);
+        update(&prev_grid, &mut grid);
 
         grid.draw();
 
