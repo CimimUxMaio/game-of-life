@@ -12,12 +12,7 @@ impl Grid {
             panic!("Dimensions for the grid can not be 0");
         }
 
-        let mut matrix = Vec::new();
-
-        for _ in 0..width {
-            let row = vec![false; height];
-            matrix.push(row);
-        }
+        let matrix = vec![vec![false; width]; height];
 
         Grid {
             width,
@@ -62,6 +57,47 @@ impl Grid {
 
     pub fn toggle(&mut self, x: usize, y: usize) {
         self.update(x, y, !self.get(x, y));
+    }
+
+    pub fn coordinates(&self) -> Vec<(usize, usize)> {
+        let mut coordinates = Vec::new();
+
+        for x in 0..self.width {
+            for y in 0..self.height {
+                coordinates.push((x, y));
+            }
+        }
+
+        coordinates
+    }
+
+    pub fn neighbours_state(&self, x: usize, y: usize) -> Vec<bool> {
+        let mut neighbours = Vec::new();
+
+        for dx in -1i32..=1 {
+            for dy in -1i32..=1 {
+                if dx == 0 && dy == 0 {
+                    // Ignore target cell: (x, y)
+                    continue;
+                }
+
+                let nx = (x as i32 + dx) as usize % self.width;
+                let ny = (y as i32 + dy) as usize % self.height;
+                neighbours.push(self.get(nx, ny));
+            }
+        }
+
+        neighbours
+    }
+}
+
+impl Clone for Grid {
+    fn clone(&self) -> Self {
+        Grid {
+            width: self.width,
+            height: self.height,
+            matrix: self.matrix.clone(),
+        }
     }
 }
 
