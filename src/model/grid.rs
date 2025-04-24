@@ -8,10 +8,14 @@ pub struct Grid {
 
 impl Grid {
     pub fn new(width: usize, height: usize) -> Grid {
+        if width == 0 || height == 0 {
+            panic!("Dimensions for the grid can not be 0");
+        }
+
         let mut matrix = Vec::new();
 
         for _ in 0..width {
-            let row = vec![true; height];
+            let row = vec![false; height];
             matrix.push(row);
         }
 
@@ -58,5 +62,80 @@ impl Grid {
 
     pub fn toggle(&mut self, x: usize, y: usize) {
         self.update(x, y, !self.get(x, y));
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn new_grid_with_positive_non_zero_dimensions() {
+        let width = 20;
+        let height = 15;
+        Grid::new(width, height);
+    }
+
+    #[test]
+    #[should_panic]
+    fn new_grid_with_zero_width() {
+        let width = 0;
+        let height = 15;
+        Grid::new(width, height);
+    }
+
+    #[test]
+    #[should_panic]
+    fn new_grid_with_zero_height() {
+        let width = 30;
+        let height = 0;
+        Grid::new(width, height);
+    }
+
+    fn create_grid() -> Grid {
+        Grid::new(5, 5)
+    }
+
+    #[test]
+    fn new_grid_should_not_contain_cells() {
+        let grid = create_grid();
+
+        for row_n in 0..grid.width {
+            for col_n in 0..grid.height {
+                assert!(!grid.matrix[row_n][col_n]);
+            }
+        }
+    }
+
+    #[test]
+    fn update_should_update_a_given_position() {
+        let mut grid = create_grid();
+        grid.update(0, 0, true);
+        assert!(grid.matrix[0][0]);
+        grid.update(0, 0, false);
+        assert!(!grid.matrix[0][0]);
+    }
+
+    #[test]
+    fn update_should_wrap_overflowing_positions() {
+        let mut grid = create_grid();
+        grid.update(grid.width, grid.height + 1, true);
+        assert!(grid.matrix[0][1]);
+    }
+
+    #[test]
+    fn toggle_should_toggle_a_given_position() {
+        let mut grid = create_grid();
+        grid.toggle(0, 0);
+        assert!(grid.matrix[0][0]);
+        grid.toggle(0, 0);
+        assert!(!grid.matrix[0][0]);
+    }
+
+    #[test]
+    fn toggle_should_wrap_overflowing_positions() {
+        let mut grid = create_grid();
+        grid.toggle(grid.width + 2, grid.height + 3);
+        assert!(grid.matrix[2][3]);
     }
 }
