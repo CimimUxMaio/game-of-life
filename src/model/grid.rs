@@ -158,7 +158,8 @@ mod tests {
     }
 
     #[test]
-    fn update_should_wrap_overflowing_positions() {
+    #[should_panic]
+    fn update_should_panic_for_overflowing_positions() {
         let mut grid = create_grid();
         grid.update(grid.width, grid.height + 1, true);
         assert!(grid.matrix[0][1]);
@@ -174,7 +175,8 @@ mod tests {
     }
 
     #[test]
-    fn toggle_should_wrap_overflowing_positions() {
+    #[should_panic]
+    fn toggle_should_panic_for_overflowing_positions() {
         let mut grid = create_grid();
         grid.toggle(grid.width + 2, grid.height + 3);
         assert!(grid.matrix[2][3]);
