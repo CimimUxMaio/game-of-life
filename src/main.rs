@@ -4,6 +4,7 @@ use macroquad::prelude::*;
 const GRID_WIDTH: usize = 50;
 const GRID_HEIGHT: usize = 50;
 
+// Updates the state of the current grid given a the previous one
 fn update(prev: &model::Grid, grid: &mut model::Grid) {
     for (x, y) in prev.coordinates() {
         let new_state = model::rules::compute_new_state(prev, x, y);
@@ -36,7 +37,9 @@ async fn main() {
 
         prev_grid = grid.clone();
 
-        std::thread::sleep(std::time::Duration::from_millis(60));
+        // Make game loop slower to be able too see moving objects better
+        std::thread::sleep(std::time::Duration::from_millis(30));
+
         next_frame().await
     }
 }

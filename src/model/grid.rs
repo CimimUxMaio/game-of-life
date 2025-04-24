@@ -44,11 +44,11 @@ impl Grid {
     }
 
     pub fn get(&self, x: usize, y: usize) -> bool {
-        self.matrix[x % self.width][y % self.height]
+        self.matrix[x][y]
     }
 
     fn get_mut(&mut self, x: usize, y: usize) -> &mut bool {
-        &mut self.matrix[x % self.width][y % self.height]
+        &mut self.matrix[x][y]
     }
 
     pub fn update(&mut self, x: usize, y: usize, value: bool) {
@@ -71,19 +71,24 @@ impl Grid {
         coordinates
     }
 
-    pub fn neighbours_state(&self, x: usize, y: usize) -> Vec<bool> {
+    pub fn neighbours(&self, x: usize, y: usize) -> Vec<(usize, usize)> {
         let mut neighbours = Vec::new();
 
         for dx in -1i32..=1 {
             for dy in -1i32..=1 {
-                if dx == 0 && dy == 0 {
-                    // Ignore target cell: (x, y)
+                let nx = x as i32 + dx;
+                let ny = y as i32 + dy;
+
+                let is_target_cell = (nx, ny) == (x as i32, y as i32);
+                let is_out_of_bounds =
+                    nx < 0 || nx >= self.width as i32 || ny < 0 || ny >= self.height as i32;
+
+                if is_target_cell || is_out_of_bounds {
                     continue;
                 }
 
-                let nx = (x as i32 + dx) as usize % self.width;
-                let ny = (y as i32 + dy) as usize % self.height;
-                neighbours.push(self.get(nx, ny));
+                // Cast should not fail after checks
+                neighbours.push((nx as usize, ny as usize));
             }
         }
 
@@ -173,5 +178,38 @@ mod tests {
         let mut grid = create_grid();
         grid.toggle(grid.width + 2, grid.height + 3);
         assert!(grid.matrix[2][3]);
+    }
+
+    #[test]
+    fn neighbour_count_for_inner_cell() {
+        let grid = create_grid();
+        let neighbour_count = grid.neighbours(2, 2).len();
+        assert_eq!(neighbour_count, 8);
+    }
+
+    #[test]
+    fn neighbour_count_for_border_cell() {
+        let grid = create_grid();
+
+        // All 4 centered borders
+        let targets = [(2, 0), (4, 2), (2, 4), (0, 2)];
+
+        for target in targets {
+            let neighbour_count = grid.neighbours(target.0, target.1).len();
+            assert_eq!(neighbour_count, 5);
+        }
+    }
+
+    #[test]
+    fn neighbour_count_for_corner_cells() {
+        let grid = create_grid();
+
+        // All 4 corners
+        let targets = [(0, 0), (4, 0), (4, 4), (0, 4)];
+
+        for target in targets {
+            let neighbour_count = grid.neighbours(target.0, target.1).len();
+            assert_eq!(neighbour_count, 3);
+        }
     }
 }
