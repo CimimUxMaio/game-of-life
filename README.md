@@ -22,6 +22,8 @@ make clean
 ## Quick Guide
 After running the game, the user will be presented with a blank window.
 
+![image](https://github.com/user-attachments/assets/ca5b8e77-91ca-4283-b64d-b68cd43e0b49)
+
 In the upper left corner, a text label is presented indicating the current mode the game is on.
 
 On start, the game defaults to **EDITING** mode. In this mode, the user is able to bring *cells*
