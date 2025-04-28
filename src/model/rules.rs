@@ -1,6 +1,6 @@
 use super::grid::Grid;
 
-pub fn compute_new_state(grid: &Grid, x: usize, y: usize) -> bool {
+pub fn compute_cell_new_state(grid: &Grid, x: usize, y: usize) -> bool {
     let cell_is_alive = grid.get(x, y);
 
     let neighbour_count = grid
@@ -38,7 +38,7 @@ mod tests {
     fn compute_state_with_underpopulation_for_dead() {
         let mut grid = create_small_grid();
         grid.toggle(0, 0); // Only one live neighbour
-        assert!(!compute_new_state(&grid, CENTER.0, CENTER.1));
+        assert!(!compute_cell_new_state(&grid, CENTER.0, CENTER.1));
     }
 
     #[test]
@@ -46,7 +46,7 @@ mod tests {
         let mut grid = create_small_grid();
         grid.toggle(0, 0); // Only one live neighbour
         grid.toggle(CENTER.0, CENTER.1); // Center is live
-        assert!(!compute_new_state(&grid, CENTER.0, CENTER.1));
+        assert!(!compute_cell_new_state(&grid, CENTER.0, CENTER.1));
     }
 
     #[test]
@@ -59,7 +59,7 @@ mod tests {
         grid.toggle(1, 2);
         grid.toggle(1, 0);
 
-        assert!(!compute_new_state(&grid, CENTER.0, CENTER.1));
+        assert!(!compute_cell_new_state(&grid, CENTER.0, CENTER.1));
     }
 
     #[test]
@@ -73,7 +73,7 @@ mod tests {
         grid.toggle(1, 0);
 
         grid.toggle(CENTER.0, CENTER.1); // Center is live
-        assert!(!compute_new_state(&grid, CENTER.0, CENTER.1));
+        assert!(!compute_cell_new_state(&grid, CENTER.0, CENTER.1));
     }
 
     #[test]
@@ -85,7 +85,7 @@ mod tests {
         grid.toggle(1, 0);
         grid.toggle(2, 1);
 
-        assert!(compute_new_state(&grid, CENTER.0, CENTER.1));
+        assert!(compute_cell_new_state(&grid, CENTER.0, CENTER.1));
     }
 
     #[test]
@@ -100,6 +100,6 @@ mod tests {
         grid.toggle(CENTER.0, CENTER.1); // Center is live
 
         // In repreduction conditions live cells stay live.
-        assert!(compute_new_state(&grid, CENTER.0, CENTER.1));
+        assert!(compute_cell_new_state(&grid, CENTER.0, CENTER.1));
     }
 }

@@ -30,7 +30,7 @@ fn update_execution_mode(grid: &mut model::Grid) {
     let prev = grid.clone();
 
     for (x, y) in prev.coordinates() {
-        let new_state = model::rules::compute_new_state(&prev, x, y);
+        let new_state = model::rules::compute_cell_new_state(&prev, x, y);
         grid.update(x, y, new_state);
     }
 }
