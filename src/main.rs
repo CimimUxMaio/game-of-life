@@ -16,7 +16,7 @@ fn screen_to_grid(screen_pos: (f32, f32)) -> (usize, usize) {
     (x as usize, y as usize) // Will always be greater than or equal to 0
 }
 
-fn edit_mode(grid: &mut model::Grid) {
+fn update_edit_mode(grid: &mut model::Grid) {
     if !is_mouse_button_pressed(MouseButton::Left) {
         return;
     }
@@ -26,7 +26,7 @@ fn edit_mode(grid: &mut model::Grid) {
 }
 
 // Updates the state of the current grid given a the previous one
-fn update(grid: &mut model::Grid) {
+fn update_execution_mode(grid: &mut model::Grid) {
     let prev = grid.clone();
 
     for (x, y) in prev.coordinates() {
@@ -56,9 +56,9 @@ async fn main() {
         clear_background(WHITE);
 
         if is_editing {
-            edit_mode(&mut grid);
+            update_edit_mode(&mut grid);
         } else {
-            update(&mut grid);
+            update_execution_mode(&mut grid);
         }
 
         if is_key_pressed(KeyCode::Space) {
