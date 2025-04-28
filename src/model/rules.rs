@@ -1,5 +1,9 @@
 use super::grid::Grid;
 
+// Compute the state of a given cell on the next generation.
+// * `grid` - Latest grid state with neighbour information.
+// * `x` - Target cell's X grid coordinate.
+// * `y` - Target cell's Y grid coordinate.
 pub fn compute_cell_new_state(grid: &Grid, x: usize, y: usize) -> bool {
     let cell_is_alive = grid.get(x, y);
 

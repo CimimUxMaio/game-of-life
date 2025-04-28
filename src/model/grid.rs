@@ -8,6 +8,9 @@ pub struct Grid {
 }
 
 impl Grid {
+    // Create a new Grid object.
+    // * `width` - New grid's width (must be greater than 0).
+    // * `height` - New grid's height (must be greater than 0).
     pub fn new(width: usize, height: usize) -> Grid {
         if width == 0 || height == 0 {
             panic!("Dimensions for the grid can not be 0");
@@ -22,6 +25,7 @@ impl Grid {
         }
     }
 
+    // Draw all cell states in the grid to the screen.
     pub fn draw(&self) {
         let cell_width = screen_width() / self.width as f32;
         let cell_height = screen_height() / self.height as f32;
@@ -44,22 +48,36 @@ impl Grid {
         }
     }
 
+    // Get a cell's state given its grid coordinates.
+    // * `x` - Cell's X grid coordinate.
+    // * `y` - Cell's Y grid coordinate.
     pub fn get(&self, x: usize, y: usize) -> bool {
         self.matrix[x][y]
     }
 
+    // Get a cell's state as a mutable reference, given its grid coordinates.
+    // * `x` - Cell's X grid coordinate.
+    // * `y` - Cell's Y grid coordinate.
     fn get_mut(&mut self, x: usize, y: usize) -> &mut bool {
         &mut self.matrix[x][y]
     }
 
+    // Update a cell's state given its coordinates within the grid.
+    // * `x` - Cell's X grid coordinate.
+    // * `y` - Cell's Y grid coordinate.
+    // * `value` - Cell's new state.
     pub fn update(&mut self, x: usize, y: usize, value: bool) {
         *self.get_mut(x, y) = value;
     }
 
+    // Toggle a cell's state (true/false) given its coordinates within the grid.
+    // * `x` - Cell's X grid coordinate.
+    // * `y` - Cell's Y grid coordinate.
     pub fn toggle(&mut self, x: usize, y: usize) {
         self.update(x, y, !self.get(x, y));
     }
 
+    // Get all the gird's valid coordinates as a pair of usize integers.
     pub fn coordinates(&self) -> Vec<(usize, usize)> {
         let mut coordinates = Vec::new();
 
@@ -72,6 +90,9 @@ impl Grid {
         coordinates
     }
 
+    // Get all valid neighbours (as coordinates) for a given cell.
+    // * `x` - Target cell's X grid coordinate.
+    // * `y` - Target cell's Y grid coordinate.
     pub fn neighbours(&self, x: usize, y: usize) -> Vec<(usize, usize)> {
         let mut neighbours = Vec::new();
 

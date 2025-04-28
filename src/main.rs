@@ -4,6 +4,8 @@ use macroquad::{miniquad::window::screen_size, prelude::*};
 const GRID_WIDTH: usize = 50;
 const GRID_HEIGHT: usize = 50;
 
+// Convert screen coordinates in pixels to grid coordinates.
+// * `screen_pos` - A tuple representing screen coordinates.
 fn screen_to_grid(screen_pos: (f32, f32)) -> (usize, usize) {
     let grid_screen_ratio = (
         GRID_WIDTH as f32 / screen_width(),
@@ -16,6 +18,8 @@ fn screen_to_grid(screen_pos: (f32, f32)) -> (usize, usize) {
     (x as usize, y as usize) // Will always be greater than or equal to 0
 }
 
+// Handle user input for edit mode.
+// * `grid` - Current grid structure to be edited by the user.
 fn update_edit_mode(grid: &mut model::Grid) {
     if !is_mouse_button_pressed(MouseButton::Left) {
         return;
@@ -25,7 +29,8 @@ fn update_edit_mode(grid: &mut model::Grid) {
     grid.toggle(x, y);
 }
 
-// Updates the state of the current grid given a the previous one
+// Update the grid state with a new cell generation.
+// * `grid` - Grid structure to be updated.
 fn update_execution_mode(grid: &mut model::Grid) {
     let prev = grid.clone();
 
@@ -35,6 +40,8 @@ fn update_execution_mode(grid: &mut model::Grid) {
     }
 }
 
+// Draw the game's UI.
+// `is_editing` - Wether the game is in editing mode or not.
 fn draw_ui(is_editing: bool) {
     let (width, height) = screen_size();
 
