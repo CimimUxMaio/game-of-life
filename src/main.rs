@@ -33,10 +33,10 @@ fn update(prev: &model::Grid, grid: &mut model::Grid) {
     }
 }
 
-fn draw_ui(is_editing: &bool) {
+fn draw_ui(is_editing: bool) {
     let (width, height) = screen_size();
 
-    let mode = if *is_editing { "EDITING" } else { "RUNNING" };
+    let mode = if is_editing { "EDITING" } else { "RUNNING" };
     let mode_label = format!("Mode: {}", mode);
     draw_text(mode_label.as_str(), width * 0.01, 30.0, 30.0, BLUE);
 
@@ -67,7 +67,7 @@ async fn main() {
         grid.draw();
         prev_grid = grid.clone();
 
-        draw_ui(&is_editing);
+        draw_ui(is_editing);
 
         // Make game loop slower to be able too see moving objects better
         std::thread::sleep(std::time::Duration::from_millis(30));
