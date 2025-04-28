@@ -1,5 +1,6 @@
 use macroquad::prelude::{BLACK, draw_rectangle, screen_height, screen_width};
 
+#[derive(Clone)]
 pub struct Grid {
     pub width: usize,
     pub height: usize,
@@ -93,16 +94,6 @@ impl Grid {
         }
 
         neighbours
-    }
-}
-
-impl Clone for Grid {
-    fn clone(&self) -> Self {
-        Grid {
-            width: self.width,
-            height: self.height,
-            matrix: self.matrix.clone(),
-        }
     }
 }
 
