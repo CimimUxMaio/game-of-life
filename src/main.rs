@@ -26,9 +26,11 @@ fn edit_mode(grid: &mut model::Grid) {
 }
 
 // Updates the state of the current grid given a the previous one
-fn update(prev: &model::Grid, grid: &mut model::Grid) {
+fn update(grid: &mut model::Grid) {
+    let prev = grid.clone();
+
     for (x, y) in prev.coordinates() {
-        let new_state = model::rules::compute_new_state(prev, x, y);
+        let new_state = model::rules::compute_new_state(&prev, x, y);
         grid.update(x, y, new_state);
     }
 }
@@ -46,8 +48,7 @@ fn draw_ui(is_editing: bool) {
 
 #[macroquad::main("Game of Life")]
 async fn main() {
-    let mut prev_grid = model::Grid::new(GRID_WIDTH, GRID_HEIGHT);
-    let mut grid = prev_grid.clone();
+    let mut grid = model::Grid::new(GRID_WIDTH, GRID_HEIGHT);
 
     let mut is_editing = true;
 
@@ -57,7 +58,7 @@ async fn main() {
         if is_editing {
             edit_mode(&mut grid);
         } else {
-            update(&prev_grid, &mut grid);
+            update(&mut grid);
         }
 
         if is_key_pressed(KeyCode::Space) {
@@ -65,7 +66,6 @@ async fn main() {
         }
 
         grid.draw();
-        prev_grid = grid.clone();
 
         draw_ui(is_editing);
 
