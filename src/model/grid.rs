@@ -28,14 +28,14 @@ impl Grid {
 
         for row_n in 0..self.width {
             for col_n in 0..self.height {
-                let is_live = self.matrix[row_n][col_n];
+                let is_alive = self.matrix[row_n][col_n];
 
-                if !is_live {
-                    // If not live don't draw.
+                if !is_alive {
+                    // If it is not alive, don't draw cell.
                     continue;
                 }
 
-                // If live, draw cell.
+                // If it is alive, draw cell.
                 let x = row_n as f32 * cell_width;
                 let y = col_n as f32 * cell_height;
 

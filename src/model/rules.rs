@@ -1,7 +1,7 @@
 use super::grid::Grid;
 
 pub fn compute_new_state(grid: &Grid, x: usize, y: usize) -> bool {
-    let cell_is_live = grid.get(x, y);
+    let cell_is_alive = grid.get(x, y);
 
     let neighbour_count = grid
         .neighbours(x, y)
@@ -17,11 +17,11 @@ pub fn compute_new_state(grid: &Grid, x: usize, y: usize) -> bool {
         return false;
     }
 
-    if !cell_is_live && reproduction {
+    if !cell_is_alive && reproduction {
         return true;
     }
 
-    cell_is_live
+    cell_is_alive
 }
 
 #[cfg(test)]
